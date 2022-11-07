@@ -1,0 +1,22 @@
+#versao da api
+apiVersion: v1
+#informar o tipo de recurso
+kind: Pod
+#Definir informações
+metadata:
+  name: primeiro-pod-declarativo
+#Especificações
+spec:
+  containers:
+      #posso colocar qualquer nome
+    - name: nginx-container
+      #imagem
+      image: nginx:latest
+    #  - name: nginx-container
+    #   #imagem
+    #   image: nginx:latest
+    #  - name: nginx-container
+    #   #imagem
+    #   image: nginx:latest
+
+# OBS! - separa containers, posso colocar varios containers

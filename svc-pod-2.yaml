@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-pod-2
+spec:
+  type: ClusterIP
+  #selecionar minha label
+  selector:
+    app: segundo-pod
+  ports:
+    - port: 9000
+    #Vai escutar na porta 80
+      targetPort: 80
