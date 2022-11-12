@@ -248,3 +248,85 @@ spec:
 **Como um service sabe quais pods deve gerenciar?**
 
 > Através de **labels** definidas no **metadata** e utilizando o campo **selector** no service.
+
+**O que é um ClusterIP?**
+
+Um serviço ClusterIP é o serviço padrão do Kubernetes. Ele fornece um serviço dentro do cluster que outros aplicativos dentro do cluster podem acessar. Não há acesso externo.
+
+![](https://miro.medium.com/max/1400/1*I4j4xaaxsuchdvO66V3lAg.webp)
+
+### Criando um Node Port
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-pod-1
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+  selector:
+    app: primeiro-pod
+```
+
+**O que é um NodePort?**
+
+Um serviço NodePort é a maneira mais primitiva de obter tráfego externo diretamente para seu serviço. NodePort, como o nome indica, abre uma porta específica em todos os nós (as VMs), e qualquer tráfego enviado para essa porta é encaminhado para o serviço.
+
+![](https://miro.medium.com/max/1400/1*CdyUtG-8CfGu2oFC5s0KwA.webp)
+
+Basicamente, um serviço NodePort tem duas diferenças de um serviço “ClusterIP” normal. Primeiro, o tipo é “NodePort”. Há também uma porta adicional chamada nodePort que especifica qual porta abrir nos nós. Se você não especificar esta porta, ela escolherá uma porta aleatória. Na maioria das vezes, você deve deixar o Kubernetes escolher a porta; Como chocante diz, há muitas ressalvas sobre quais portas estão disponíveis para você usar.
+
+**Quando usar?**
+
+Existem muitas desvantagens nesse método:
+
+1. Você só pode ter um serviço por porta
+2. Você só pode usar as portas 30000–32767
+3. Se o endereço IP do seu Node/VM ​​mudar, você precisa lidar com isso.
+
+Por esses motivos, não recomendo usar esse método em produção para expor diretamente seu serviço. Se você estiver executando um serviço que não precisa estar sempre disponível ou for muito sensível aos custos, esse método funcionará para você. Um bom exemplo de tal aplicativo é um aplicativo de demonstração ou algo temporário.
+
+**Mostrar o IP dos nó**
+
+    kubectl get nodes -o wide
+
+**obs! Para ter acesso a aplicação no kluster no linux é preciso acessar o internal-ip:nodePort, já no windows é so localhost:nodePort.**
+
+```shell
+NAME          TYPE        CLUSTER-IP      PORT(S)               
+svc-1       NodePort     10.101.214.22   80:30000/TCP
+```
+- Dentro do cluster o service escuta na porta 80, enquanto fora do cluster escuta na porta 30000.
+- Utilizamos o IP do nó para acessar o service através da porta 30000.
+
+###  Criando um Load Balancer
+
+LoadBalancer nada mais é do que um ClusterIP que permite a comunicação entre uma mna do mundo externo e os nosso pods. Só que ele automaticamente se integra ao LoadBalancer do nosso cloud provider.
+
+- Utilizam automaticamente os balanceadores de carga de cloud providers.
+- Por serem um Load Balancer, também são um NodePort e ClusterIP ao mesmo tempo.
+- Um serviço LoadBalancer é a maneira padrão de expor um serviço à Internet. No GKE, isso ativará um balanceador de carga de rede que fornecerá um único endereço IP que encaminhará todo o tráfego para seu serviço.
+
+![](https://miro.medium.com/max/1400/1*P-10bQg_1VheU9DRlvHBTQ.webp)
+
+**Quando usar?**
+
+Se você deseja expor diretamente um serviço, este é o método padrão. Todo o tráfego na porta que você especificar será encaminhado para o serviço. Não há filtragem, roteamento, etc. Isso significa que você pode enviar quase qualquer tipo de tráfego para ele, como HTTP, TCP, UDP, Websockets, gRPC ou qualquer outro.
+
+## Resumo do módulo:
+
+- O que são e para que servem os Services
+- Como garantir estabilidade de IP e DNS
+- Como criar um Service
+- Labels são responsáveis por definir a relação Service x Pod
+- Um ClusterIP funciona apenas dentro do cluster
+- Um NodePort expõe Pods para dentro e fora do cluster
+- Um LoadBalancer também é um NodePort e ClusterIP
+- Um LoadBalancer é capaz de automaticamente utilizar um balanceador de carga de um cloud provider
+
+## Aplicando services ao projeto
+
+### Acessando o Portal
+
