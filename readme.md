@@ -87,12 +87,12 @@ Quando criamos um pod ele ganha um endereço ip e dentro do Pod nós temos total
 
 ***OBS!!*** Não pode existir 2 containers dentro de pod com as mesma porta
 
-- Em caso de um único container flhar nesse momento, o pod vai parar de funcionar, kubernets vai criar um novo pod, mas com o endereço ip diferente do antigo pod.
+- Em caso de um único container falhar nesse momento, o pod vai parar de funcionar, kubernets vai criar um novo pod, mas com o endereço ip diferente do antigo pod.
   
     - **Pods são efêmeros!**
     - **São substituidos a qualquer momento**
 
-🔵 Caso exista 2 containers dentro de um pod, e um  dos containers pare de funcionar, o outro vai estar rodando normal, logo, esse pod ainda vau  estar funcionano normamente.
+🔵 Caso exista 2 containers dentro de um pod, e um  dos containers pare de funcionar, o outro vai estar rodando normal, logo, esse pod ainda vai estar funcionando normalmente.
 
 🔵 Se caso os 2 containers parem de funcionar, ai sim o pod é finalizado! Outro será criado em seu lugar!
 
