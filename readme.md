@@ -108,7 +108,7 @@ Dentro do pod, containers podem se comunicar via localhost com o mesmo ip do pod
 - Como possuem IPs diferentes, containers em pods diferentes podem utilizar o mesmo número de porta.
 - containers dentro de mesmo pod conseguem de comunicar via localhost.
 
-## Criando o primeiro POD
+## Criando o primeiro POD de forma Imperativa
 
 **Cria POD**
     
