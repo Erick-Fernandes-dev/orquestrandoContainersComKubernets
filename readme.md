@@ -170,7 +170,7 @@ spec:
 
 **Para aplicar/criar o pod, digite o seguinte comando**
 
-``kubctl apply -f <arquivo.yaml>``
+    kubctl apply -f <arquivo.yaml>
 
 **Deletando pods**
 
